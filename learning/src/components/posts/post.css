@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Sans');
 .post {
     border-radius: 3px;
     border: 1px solid #e6e6e6;
@@ -5,12 +6,17 @@
     margin-bottom: 60px;
     margin-left : 20%;
     margin-right: 20%;
-    margin-top: 20%;
+    margin-top: 15%;
   }
   .user-post {
     display: flex;
     padding: 16px;
     align-items: center;
+  }
+  .user-post span{
+    margin-left: 12px;
+    font-family: 'PT Sans', sans-serif;
+    font-weight: bold;
   }
   .user-avatar {
     width: 30px;
@@ -21,11 +27,7 @@
     height: 100%;
     border-radius: 50%;
   }
-  .user-alias {
-    margin-left: 12px;
-    font-family: 'PT Sans', sans-serif;
-    font-weight: bold;
-  }
+  
   .post-image-bg {
     background-color: #efefef;
   }
