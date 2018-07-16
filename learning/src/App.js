@@ -1,20 +1,46 @@
 import React, { Component } from 'react';
 import './App.css';
 import Header from './components/Header';
-import Post from './components/Posts'
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
+import Posts from "./components/Posts";
+import Pusher from 'pusher-js';
+
+
+const client=new ApolloClient({
+  uri:"http://localhost:4000/graphql"
+});
+
+
 
 class App extends Component {
+
+  constructor(){
+    super();
+
+    this.pusher=new Pusher("b0edbb37cc3d9318d182",{
+      encrypted:true
+    })
+  }
+
   render() {
+
     return (
-      <div>
-      <Header />
-      <div>
-        <Post alias="htk_codes" avatar="https://www.laravelnigeria.com/img/chris.jpg" caption="Moving the community!" image="https://pbs.twimg.com/media/DOXI0IEXkAAkokm.jpg"  />
-        <Post alias="htk_code" avatar="https://www.laravelnigeria.com/img/chris.jpg" caption="Moving the community!" image="https://pbs.twimg.com/media/DOXI0IEXkAAkokm.jpg"  />
+      
+        <ApolloProvider client={client}>
+      <div className="App">
+      <Header/>
+      <section className="App-main">
+      <Posts pusher={this.pusher} apollo_client={client}/>
+      </section>
       </div>
-    </div>
-    );
+        </ApolloProvider>
+        
+    )
   }
 }
+
+
+
 
 export default App;

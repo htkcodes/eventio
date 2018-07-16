@@ -1,7 +1,43 @@
 const express=require("express");
+const app=express();
 const graphqlHTTP=require("express-graphql");
 const buildSchema=require("graphql").buildSchema;
 const cors=require("cors");
+const Pusher=require("pusher");
+const bodyParser=require("body-parser");
+const multiParty=require("connect-multiparty");
+const secret=require("./config/secret");
+const multipartMiddleware = new multiParty();
+
+
+
+
+let pusher = new Pusher({
+    appId: secret.pusher.appId,
+    key: secret.pusher.key,
+    secret: secret.pusher.secret,
+    cluster: secret.pusher.cluster,
+    encrypted: secret.pusher.encrypted
+  });
+
+  app.post('/newpost', multipartMiddleware, (req,res) => {
+    // create a sample post
+    let post = {
+      user : {
+        alias: req.body.name,
+        avatar : req.body.avatar
+      },
+      image : req.body.image,
+      caption : req.body.caption
+    }
+
+    // trigger pusher event 
+    pusher.trigger("master-thorns-814", "new-post", { 
+      post 
+    });
+
+    return res.json({status : "Post created"});
+  }); 
 
 
 let schema=buildSchema(`
@@ -14,12 +50,14 @@ type Post{
     id:String!
 user:User!
 caption:String!
-image:String!}
+image:String!
+}
 
 type Query{
     user(id:String):User!
 post(user_id:String,post_id:String):Post!
-posts(user_id:String):[Post]}
+posts(user_id:String):[Post]
+}
 
 `)
 
@@ -83,7 +121,6 @@ let userslist = {
       }
   }
 
-  let app=express();
 
   app.use(cors());
 
