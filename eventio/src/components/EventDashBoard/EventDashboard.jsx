@@ -57,18 +57,38 @@ const eventDashBoard = [
 
 
 export default class EventDashBoard extends Component {
+  constructor(props)
+  {
+super(props)
+
+this.state={
+  events:eventDashBoard,
+  isOpen:false
+}
+  }
+
+  handleFormOpen=()=>{
+    this.setState({
+      isOpen:true
+    })
+  }
+
+  handleFormCancel=()=>{
+    this.setState({
+      isOpen:false
+    })
+  }
+
   render() {
     return (
     <Grid>
         <Grid.Column width={10}>
        
-<EventList events={eventDashBoard} />
+<EventList events={this.state.events} />
         </Grid.Column>
         <Grid.Column width={6}>
-      <Button postive content="Creart Event"/>
-
-      <EventForm/>
-        
+      <Button postive onClick={this.handleFormOpen} content="Create Event" color='green' />
+{this.state.isOpen && <EventForm handleFormCancel={this.handleFormCancel}/>}
         </Grid.Column>
         </Grid>
     )
